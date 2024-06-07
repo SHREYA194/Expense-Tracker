@@ -1,0 +1,13 @@
+    create table user_master (
+        active_flag integer not null,
+        birth_date timestamp(6),
+        created_date timestamp(6) not null,
+        updated_date timestamp(6),
+        user_id bigserial not null,
+        created_by_ip varchar(255) not null,
+        email varchar(255) not null unique,
+        name varchar(255) not null,
+        password varchar(255) not null,
+        updated_by_ip varchar(255),
+        primary key (user_id)
+    )
