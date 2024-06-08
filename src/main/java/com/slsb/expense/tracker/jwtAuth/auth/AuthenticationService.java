@@ -1,13 +1,11 @@
-package com.slsb.expense.tracker.auth;
+package com.slsb.expense.tracker.jwtAuth.auth;
 
-import com.slsb.expense.tracker.config.JwtService;
-import com.slsb.expense.tracker.user.Role;
-import com.slsb.expense.tracker.user.User;
-import com.slsb.expense.tracker.user.UserRepository;
+import com.slsb.expense.tracker.jwtAuth.config.JwtService;
+import com.slsb.expense.tracker.jwtAuth.user.Role;
+import com.slsb.expense.tracker.jwtAuth.user.User;
+import com.slsb.expense.tracker.jwtAuth.user.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,7 +29,7 @@ public class AuthenticationService {
         var user = User.builder()
                 .name(registerRequest.getName())
                 .email(registerRequest.getEmail())
-                .password(registerRequest.getPassword())
+                .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .birthdate(registerRequest.getBirthdate())
                 .role(Role.USER)
                 .createdByIp(request.getRemoteAddr())

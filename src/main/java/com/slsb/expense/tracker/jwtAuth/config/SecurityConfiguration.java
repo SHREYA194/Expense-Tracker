@@ -1,6 +1,5 @@
-package com.slsb.expense.tracker.config;
+package com.slsb.expense.tracker.jwtAuth.config;
 
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

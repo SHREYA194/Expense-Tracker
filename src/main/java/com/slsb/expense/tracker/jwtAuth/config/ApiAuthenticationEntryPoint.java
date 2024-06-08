@@ -1,4 +1,4 @@
-package com.slsb.expense.tracker.config;
+package com.slsb.expense.tracker.jwtAuth.config;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

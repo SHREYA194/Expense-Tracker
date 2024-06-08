@@ -1,4 +1,4 @@
-package com.slsb.expense.tracker.auth;
+package com.slsb.expense.tracker.jwtAuth.auth;
 
 import lombok.*;
 

@@ -1,6 +1,6 @@
-package com.slsb.expense.tracker.config;
+package com.slsb.expense.tracker.jwtAuth.config;
 
-import com.slsb.expense.tracker.user.UserRepository;
+import com.slsb.expense.tracker.jwtAuth.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

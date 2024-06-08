@@ -1,10 +1,9 @@
-package com.slsb.expense.tracker.user;
+package com.slsb.expense.tracker.jwtAuth.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.NotFound;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

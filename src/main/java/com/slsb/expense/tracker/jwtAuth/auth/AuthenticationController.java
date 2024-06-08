@@ -1,4 +1,4 @@
-package com.slsb.expense.tracker.auth;
+package com.slsb.expense.tracker.jwtAuth.auth;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
