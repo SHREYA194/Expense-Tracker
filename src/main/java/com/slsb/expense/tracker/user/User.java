@@ -1,8 +1,10 @@
 package com.slsb.expense.tracker.user;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.NotFound;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,12 +30,15 @@ public class User implements UserDetails {
     private Long userId;
 
     @Column(name = "name", nullable = false)
+    @NotBlank(message = "Name is mandatory")
     private String name;
 
     @Column(name = "email", unique = true, nullable = false)
+    @NotBlank(message = "Email is mandatory")
     private String email;
 
     @Column(name = "password", nullable = false)
+    @NotBlank(message = "Password is mandatory")
     private String password;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")

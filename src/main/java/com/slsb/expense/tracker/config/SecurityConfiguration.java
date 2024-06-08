@@ -25,7 +25,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.disable())
+                .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         authorize -> authorize
                                 .requestMatchers("/api/auth/**")
@@ -33,7 +33,9 @@ public class SecurityConfiguration {
                                 .anyRequest()
                                 .authenticated()
                 )
-                .sessionManagement(sessionmgmt -> sessionmgmt.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(sessionMgmt -> sessionMgmt.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider)
+                .exceptionHandling((exception) -> exception.authenticationEntryPoint(apiAuthenticationEntryPoint))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

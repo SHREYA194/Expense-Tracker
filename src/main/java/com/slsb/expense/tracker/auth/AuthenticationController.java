@@ -1,6 +1,7 @@
 package com.slsb.expense.tracker.auth;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register (
             HttpServletRequest request,
-            @RequestBody RegisterRequest registerRequest
+            @Valid @RequestBody RegisterRequest registerRequest
     ) {
         return ResponseEntity.ok(service.register(request, registerRequest));
     }
