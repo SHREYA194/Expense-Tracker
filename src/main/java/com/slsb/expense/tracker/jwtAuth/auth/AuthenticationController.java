@@ -27,7 +27,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login (
             HttpServletRequest request,
-            @RequestBody AuthenticationRequest loginRequest
+            @Valid @RequestBody AuthenticationRequest loginRequest
     ) {
         return ResponseEntity.ok(service.authenticate(request, loginRequest));
     }
@@ -35,7 +35,7 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate (
             HttpServletRequest request,
-            @RequestBody AuthenticationRequest authenticateRequest
+            @Valid @RequestBody AuthenticationRequest authenticateRequest
     ) {
         return ResponseEntity.ok(service.authenticate(request, authenticateRequest));
     }
