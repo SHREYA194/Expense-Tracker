@@ -49,6 +49,8 @@ public class GlobalExceptionHandler {
 
         if (ex.getMessage().contains("email")) {
             errors = Arrays.asList("Email address is already registered.");
+        } else if (ex.getMessage().contains("payment_mode_name")) {
+            errors = Arrays.asList("Payment Mode with this name is already present.");
         } else if (ex.getMessage().contains("category_name")) {
             errors = Arrays.asList("Category with this name is already present.");
         } else if (ex.getMessage().contains("cashbook_name")) {
