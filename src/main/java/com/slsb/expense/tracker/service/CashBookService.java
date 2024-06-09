@@ -16,6 +16,7 @@ import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +37,7 @@ public class CashBookService {
                 .build();
 
         CashBook resultCashBook = cashBookRepository.save(cashbook);
+
         CashBookResponseDto cashBookResponseDto = new CashBookResponseDto();
         BeanUtils.copyProperties(resultCashBook, cashBookResponseDto);
 
@@ -44,14 +46,17 @@ public class CashBookService {
 
     public List<CashBookResponseDto> getAllByUserCashBook(Long userId) {
         List<CashBook> cashBookList = cashBookRepository.findByUser(userRepository.findById(userId).get());
+
         List<CashBookResponseDto> cashBookResponseDtoList = new ArrayList<>();
 
-        CashBookResponseDto cashBookResponseDto;
-        for (CashBook cashBook : cashBookList) {
-            cashBookResponseDto = new CashBookResponseDto();
-            BeanUtils.copyProperties(cashBook, cashBookResponseDto);
-            cashBookResponseDtoList.add(cashBookResponseDto);
-        }
+        cashBookResponseDtoList = cashBookList
+                .stream()
+                .map(cashBook -> {
+                    CashBookResponseDto cashBookResponseDto = new CashBookResponseDto();
+                    BeanUtils.copyProperties(cashBook,cashBookResponseDto);
+                    return cashBookResponseDto;
+                })
+                .collect(Collectors.toList());
 
         return cashBookResponseDtoList;
     }
@@ -65,20 +70,15 @@ public class CashBookService {
 
     public CashBookResponseDto getCashBookById(Long cashbookId, Long userId) throws AccessDeniedException {
         CashBookResponseDto cashBookResponseDto = new CashBookResponseDto();
-
         CashBook cashBook = cashBookRepository.findById(cashbookId).get();
-
         validateCashBookUser(cashbookId, userId);
-
         BeanUtils.copyProperties(cashBook, cashBookResponseDto);
         return cashBookResponseDto;
     }
 
     public CashBookResponseDto updateCashBook(HttpServletRequest request, CashBookRequestDto cashBookRequestDto, Long userId) throws AccessDeniedException {
         User user = userRepository.findById(userId).get();
-
         CashBook cashBook = cashBookRepository.findById(cashBookRequestDto.getCashookId()).get();
-
         validateCashBookUser(cashBookRequestDto.getCashookId(), userId);
 
         cashBook.setCashbookName(cashBookRequestDto.getCashbookName());
