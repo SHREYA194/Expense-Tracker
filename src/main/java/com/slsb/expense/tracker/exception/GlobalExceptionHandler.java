@@ -49,8 +49,9 @@ public class GlobalExceptionHandler {
 
         if (ex.getMessage().contains("email")) {
             errors = Arrays.asList("Email address is already registered.");
-
-        } else if (ex.getMessage().contains("cashbook")) {
+        } else if (ex.getMessage().contains("category_name")) {
+            errors = Arrays.asList("Category with this name is already present.");
+        } else if (ex.getMessage().contains("cashbook_name")) {
             errors = Arrays.asList("Cashbook with this name is already present.");
         } else {
             errors = Arrays.asList("Data already present.");
