@@ -1,7 +1,5 @@
 package com.slsb.expense.tracker.controller;
 
-import com.slsb.expense.tracker.dto.category.CategoryRequestDto;
-import com.slsb.expense.tracker.dto.category.CategoryResponseDto;
 import com.slsb.expense.tracker.dto.paymentMode.PaymentModeRequestDto;
 import com.slsb.expense.tracker.dto.paymentMode.PaymentModeResponseDto;
 import com.slsb.expense.tracker.service.PaymentModeService;
