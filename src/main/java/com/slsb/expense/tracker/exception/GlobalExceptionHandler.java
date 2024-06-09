@@ -12,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.nio.file.AccessDeniedException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -48,6 +49,11 @@ public class GlobalExceptionHandler {
 
         if (ex.getMessage().contains("email")) {
             errors = Arrays.asList("Email address is already registered.");
+
+        } else if (ex.getMessage().contains("cashbook")) {
+            errors = Arrays.asList("Cashbook with this name is already present.");
+        } else {
+            errors = Arrays.asList("Data already present.");
         }
 
         return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
@@ -66,6 +72,18 @@ public class GlobalExceptionHandler {
     // Illegal Argument Exception
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, List<String>>> handleValidationErrorsIllegalArgumentException(IllegalArgumentException ex) {
+        List<String> errors = Arrays.asList(ex.getMessage().toString());
+        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<Map<String, List<String>>> handleValidationErrorsNoSuchElementException(NoSuchElementException ex) {
+        List<String> errors = Arrays.asList(ex.getMessage().toString());
+        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Map<String, List<String>>> handleValidationErrorsAccessDeniedException(AccessDeniedException ex) {
         List<String> errors = Arrays.asList(ex.getMessage().toString());
         return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
