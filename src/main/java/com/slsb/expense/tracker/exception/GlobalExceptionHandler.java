@@ -1,5 +1,6 @@
 package com.slsb.expense.tracker.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -23,6 +24,14 @@ public class GlobalExceptionHandler {
         return errorResponse;
     }
 
+    // jwt token expired exception
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<Map<String, List<String>>> handleValidationErrorsExpiredJwtException(ExpiredJwtException ex) {
+        List<String> errors = Arrays.asList(ex.getMessage().toString());
+        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    // dto field null or empty exception
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, List<String>>> handleValidationErrorsMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         List<String> errors = ex.getBindingResult().getFieldErrors()
@@ -32,6 +41,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
+    // entity unique constraint violation exception
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Map<String, List<String>>> handleValidationErrorsDataIntegrityViolationException(DataIntegrityViolationException ex) {
         List<String> errors = Arrays.asList(ex.getMessage().toString());
@@ -42,6 +52,8 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
+
+    // entity not null and not empty violation exception
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Map<String, List<String>>> handleValidationErrorsConstraintViolationException(ConstraintViolationException ex) {
         List<String> errors = ex.getConstraintViolations()
@@ -51,12 +63,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
+    // Illegal Argument Exception
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, List<String>>> handleValidationErrorsIllegalArgumentException(IllegalArgumentException ex) {
         List<String> errors = Arrays.asList(ex.getMessage().toString());
         return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
+    // all exception
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, List<String>>> handleValidationErrorsException(Exception ex) {
         List<String> errors = Arrays.asList(ex.getMessage().toString());

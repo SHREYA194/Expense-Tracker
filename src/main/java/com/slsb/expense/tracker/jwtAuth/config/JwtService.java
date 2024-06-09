@@ -3,6 +3,7 @@ package com.slsb.expense.tracker.jwtAuth.config;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,15 @@ import java.util.function.Function;
 
 @Component
 public class JwtService  {
+
+    private static final long tokenExpirationTime = (1000 * 60 * 30);
+
+    // used for single secret key
+    private static final String secretKey = "dAJEVMAFChvUGIjRf3Rg5NiR2MjQpM+OYUeU1iqkxEopP137ZGNjVPSGp6y04WtT";
+
+    // used for generating different secret key every time
+    private static final Key secretKeyAuto = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -37,7 +47,7 @@ public class JwtService  {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + tokenExpirationTime))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -65,6 +75,8 @@ public class JwtService  {
     }
 
     private Key getSignInKey() {
-        return Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        return secretKeyAuto;
+
+//        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
     }
 }
