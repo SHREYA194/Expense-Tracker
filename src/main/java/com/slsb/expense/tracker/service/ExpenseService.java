@@ -80,21 +80,6 @@ public class ExpenseService {
 
         ExpenseResponseDto responseExpenseDto = new ExpenseResponseDto();
 
-        /*BeanUtils.copyProperties(resultExpense, responseExpenseDto);
-
-        CategoryResponseDto resultCategoryResponseDto = new CategoryResponseDto();
-        BeanUtils.copyProperties(resultExpense.getCategory(), resultCategoryResponseDto);
-        responseExpenseDto.setCategoryResponseDto(resultCategoryResponseDto);
-
-        PaymentModeResponseDto resultPaymentModeResponseDto = new PaymentModeResponseDto();
-        BeanUtils.copyProperties(resultExpense.getPaymentMode(), resultPaymentModeResponseDto);
-        responseExpenseDto.setPaymentModeResponseDto(resultPaymentModeResponseDto);
-
-        CashBookResponseDto resultCashBookResponseDto = new CashBookResponseDto();
-        BeanUtils.copyProperties(resultExpense.getCashBook(), resultCashBookResponseDto);
-        responseExpenseDto.setCashBookResponseDto(resultCashBookResponseDto);*/
-
-
         convertAllChildEntityToDto(resultExpense, responseExpenseDto);
 
         return responseExpenseDto;
@@ -138,5 +123,39 @@ public class ExpenseService {
         expenseResponseDto.setCashBookResponseDto(resultCashBookResponseDto);
 
         return expenseResponseDto;
+    }
+
+    public ExpenseResponseDto updateExpense(HttpServletRequest request, ExpenseRequestDto expenseRequestDto, Long cashbookId) {
+
+        Category category = categoryRepository.findById(expenseRequestDto.getCategoryRequestDto().getCategoryId()).get();
+        PaymentMode paymentMode = paymentModeRepository.findById(expenseRequestDto.getPaymentModeRequestDto().getPaymentModeId()).get();
+        CashBook cashBook = cashBookRepository.findById(cashbookId).get();
+        Expense expense = expenseRepository.findById(expenseRequestDto.getExpenseId()).get();
+
+        expense.setExpenseName(expenseRequestDto.getExpenseName());
+        expense.setExpenseDateTime(expenseRequestDto.getExpenseDateTime());
+        expense.setEntryType(expenseRequestDto.getEntryType());
+        expense.setExpenseDateTime(expenseRequestDto.getExpenseDateTime());
+        expense.setAmount(expenseRequestDto.getAmount());
+        expense.setRemarks(expenseRequestDto.getRemarks());
+        expense.setCategory(category);
+        expense.setPaymentMode(paymentMode);
+        expense.setCashBook(cashBook);
+        expense.setUpdatedDate(new Date());
+        expense.setUpdatedByIp(request.getRemoteAddr());
+
+        Expense resultExpense = expenseRepository.save(expense);
+        ExpenseResponseDto expenseResponseDto = new ExpenseResponseDto();
+//        BeanUtils.copyProperties(resultExpense, expenseResponseDto);
+
+        convertAllChildEntityToDto(resultExpense, expenseResponseDto);
+
+        return expenseResponseDto;
+    }
+
+    public String deleteExpenseById(Long expenseId, Long cashbookId) {
+        String expenseName = expenseRepository.findById(expenseId).get().getExpenseName();
+        expenseRepository.deleteById(expenseId);
+        return "Category " + expenseName + " successfully deleted.";
     }
 }

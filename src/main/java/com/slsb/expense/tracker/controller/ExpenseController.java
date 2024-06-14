@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -42,6 +43,23 @@ public class ExpenseController {
             @RequestParam Long cashbookId
     ) {
         return ResponseEntity.ok(expenseService.getExpenseById(expenseId, cashbookId));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ExpenseResponseDto> updateExpense(
+            HttpServletRequest request,
+            @Valid @RequestBody ExpenseRequestDto expenseRequestDto,
+            @RequestParam Long cashbookId
+    ) {
+        return ResponseEntity.ok(expenseService.updateExpense(request, expenseRequestDto, cashbookId));
+    }
+
+    @DeleteMapping("/deleteById/{id}")
+    public ResponseEntity<String> deleteExpenseById(
+            @PathVariable("id") Long expenseId,
+            @RequestParam Long cashbookId
+    ) {
+        return ResponseEntity.ok(expenseService.deleteExpenseById(expenseId, cashbookId));
     }
 
 }
