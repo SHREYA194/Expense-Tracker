@@ -146,7 +146,6 @@ public class ExpenseService {
 
         Expense resultExpense = expenseRepository.save(expense);
         ExpenseResponseDto expenseResponseDto = new ExpenseResponseDto();
-//        BeanUtils.copyProperties(resultExpense, expenseResponseDto);
 
         convertAllChildEntityToDto(resultExpense, expenseResponseDto);
 
